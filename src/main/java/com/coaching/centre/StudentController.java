@@ -6,11 +6,14 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.service.annotation.PutExchange;
 @RestController 
 public class StudentController {
      private ArrayList<Student> data= new ArrayList<>();
@@ -47,6 +50,28 @@ public class StudentController {
         }
         data.add(stu);
         return ResponseEntity.status(HttpStatus.CREATED).body(stu);
+    }
+    @PutMapping ("/students/{id}")
+    public ResponseEntity<Student> putStudent(@PathVariable int id,@RequestBody Student newStudent){
+            for(Student s : data){
+                    if(s.getId()==id){
+                        s.SetName(newStudent.getName());
+                        s.SetGrade(newStudent.getGrade());
+                        return ResponseEntity.ok(s);
+                    }
+                    
+            }
+            return ResponseEntity.notFound().build();      
+    }
+    @DeleteMapping ("/students/{id}")
+    public ResponseEntity<Void> deleteStudent(@PathVariable int id){
+        for(Student s : data){
+            if(s.getId()==id){
+                data.remove(s);
+                return ResponseEntity.noContent().build();
+            }
+        }
+        return ResponseEntity.notFound().build();
     }
 
 

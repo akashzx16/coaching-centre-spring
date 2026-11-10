@@ -19,5 +19,12 @@ public class Student {
     public String getGrade(){
         return grade;
     }
+    public void SetName(String name){
+        this.name=name;
+
+    }
+    public void SetGrade(String grade){
+        this.grade=grade;
+    }
     
 }
