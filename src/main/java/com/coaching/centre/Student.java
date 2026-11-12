@@ -1,13 +1,17 @@
 package com.coaching.centre;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 
 
-@Entity 
+    @Entity 
 public class Student {
-    @Id 
-   private int id;
+    @Id @Positive(message = "ID must be positive") 
+   private int id;  //primary key 
+   @NotBlank (message = "Name is required")
     private String name;
+    @NotBlank (message = "Grade is required")
     private String grade;
     public Student(){
 

@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.service.annotation.PutExchange;
 
+import jakarta.validation.Valid;
+
 
 @RestController 
 
@@ -43,7 +45,7 @@ public class StudentController {
 
     @PostMapping ("/students")
 
-    public ResponseEntity<Student> addStudent (@RequestBody Student stu){
+    public ResponseEntity<Student> addStudent (@Valid @RequestBody Student stu){
         if (repository.existsById(stu.getId())) {
     return ResponseEntity.status(HttpStatus.CONFLICT).build();
 }
@@ -53,7 +55,7 @@ public class StudentController {
 
 
     @PutMapping ("/students/{id}")
-    public ResponseEntity<Student> putStudent(@PathVariable int id,@RequestBody Student newStudent){
+    public ResponseEntity<Student> putStudent(@PathVariable int id, @Valid @RequestBody Student newStudent){
             Optional<Student> found = repository.findById(id);
                 if (found.isPresent()) {
                 Student s = found.get();
