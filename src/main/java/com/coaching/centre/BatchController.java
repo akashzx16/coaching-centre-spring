@@ -1,0 +1,40 @@
+package com.coaching.centre;
+
+import java.util.List;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import jakarta.validation.Valid;
+
+@RestController 
+@RequestMapping ("/batches")
+public class BatchController {
+    private final BatchRepository repository;
+    public BatchController(BatchRepository repository){
+        this.repository=repository;
+    }   
+
+    @PostMapping 
+    public ResponseEntity <Object> createBatch (@Valid @RequestBody Batch batch){
+        if (repository.existsById(batch.getId())){
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+        Batch savedBatch = repository.save(batch);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedBatch);
+    }
+
+    @GetMapping 
+    public List<Batch> getAllBatch(){
+        return repository.findAll();
+    }
+
+
+
+
+}
