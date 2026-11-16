@@ -16,8 +16,12 @@ import jakarta.validation.Valid;
 @RequestMapping("/enrolments")
 public class EnrolmentController {
     private final EnrolmentRepository enrolrepo;
+    private final StudentRepository studentRepository;
+    private  final BatchRepository batchRepository;
     
-    public EnrolmentController(EnrolmentRepository enrolrepo){
+    public EnrolmentController(EnrolmentRepository enrolrepo,StudentRepository studentRepository, BatchRepository batchRepository){
+        this.studentRepository=studentRepository;
+        this.batchRepository=batchRepository;   
         this.enrolrepo=enrolrepo;
 
     }
@@ -26,6 +30,15 @@ public class EnrolmentController {
         if(enrolrepo.existsById(enrolment.getId())){
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
+        if (!studentRepository.existsById(enrolment.getStudentId())){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        if(!batchRepository.existsById(enrolment.getBatchId())){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); 
+        }
+
+
+
         Enrolment savedEnrolment = enrolrepo.save(enrolment);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedEnrolment);  
     }

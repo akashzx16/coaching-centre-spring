@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Positive;
 public class Enrolment {
     @Id @Positive 
     private int id;
-    @Positive (message = "Student ID must be postive")
+    @Positive (message = "Student ID must be positive")
     private int studentId;
     @Positive 
     private int batchId;
