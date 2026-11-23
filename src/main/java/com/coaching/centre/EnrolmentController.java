@@ -1,10 +1,13 @@
 package com.coaching.centre;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,4 +49,27 @@ public class EnrolmentController {
     public List<Enrolment> getAllEnrolments(){
         return enrolrepo.findAll();
     }
+    @GetMapping ("/{id}")
+    public ResponseEntity<Enrolment> getEnrolment(@PathVariable int id){
+        Optional<Enrolment> enrolment = enrolrepo.findById(id);
+        if(enrolment.isPresent()){
+            return ResponseEntity.ok(enrolment.get());
+        }
+        else{
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
+    @DeleteMapping ("/{id}")
+    public ResponseEntity<Void> deleteEnrolment(@PathVariable int id){
+        if(!enrolrepo.existsById(id)){
+            return ResponseEntity.notFound().build();
+        }
+        enrolrepo.deleteById(id);
+        return ResponseEntity.noContent().build();  
+    }
+
+
+
 }
