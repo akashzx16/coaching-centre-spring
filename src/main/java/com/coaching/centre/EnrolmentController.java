@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -69,7 +70,28 @@ public class EnrolmentController {
         enrolrepo.deleteById(id);
         return ResponseEntity.noContent().build();  
     }
+        @PutMapping ("/{id}")
+        public ResponseEntity<Enrolment> updateEnrolment( @PathVariable int id, @Valid @RequestBody Enrolment newData){
+            Optional<Enrolment> result = enrolrepo.findById(id);
 
+            if (!result.isPresent()) {
+                    return ResponseEntity.notFound().build();
+                }
+
+            Enrolment old = result.get();
+                if(!studentRepository.existsById(newData.getStudentId())){
+                    return ResponseEntity.notFound().build();
+                }
+                if(!batchRepository.existsById(newData.getBatchId())){
+                    return ResponseEntity.notFound().build();
+                }
+            old.setStudentId(newData.getStudentId());
+            old.setBatchId(newData.getBatchId());
+
+            return ResponseEntity.ok(enrolrepo.save(old));
+
+
+        }
 
 
 }
