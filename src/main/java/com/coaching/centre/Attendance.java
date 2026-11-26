@@ -17,11 +17,12 @@ public class Attendance {
     @NotNull (message="Date is required")
     @PastOrPresent (message="Date cannot be in the future")
     private LocalDate date;
-    private boolean present;   
+    @NotNull (message = "Attendance status is required")
+    private Boolean present;   
     public Attendance(){
 
     }
-    public Attendance(int id, int enrolmentId, LocalDate date, boolean present){
+    public Attendance(int id, int enrolmentId, LocalDate date, Boolean present){
         this.id=id;
         this.enrolmentId=enrolmentId;
         this.date=date;
@@ -46,10 +47,10 @@ public class Attendance {
     public void setDate( LocalDate date){
         this.date=date;
     }
-    public boolean isPresent(){
+    public Boolean getPresent(){
         return present;
     }
-    public void setPresent(boolean present){
+    public void setPresent(Boolean present){
         this.present=present;
     }
 }
