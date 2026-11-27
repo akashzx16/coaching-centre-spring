@@ -48,7 +48,9 @@ public class BatchController {
                     Batch batch = repository.findById(id).get(); 
                     batch.setName(updatedbBatch.getName());
                     batch.setSubject(updatedbBatch.getSubject());
+                    batch.setGrade(updatedbBatch.getGrade());
                     batch.setSchedule(updatedbBatch.getSchedule());
+                    batch.setMonthlyFee(updatedbBatch.getMonthlyFee());
                     Batch saved = repository.save(batch);
                     return ResponseEntity.ok(saved);
                 }
