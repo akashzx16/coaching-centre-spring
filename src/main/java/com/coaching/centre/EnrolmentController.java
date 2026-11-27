@@ -87,6 +87,7 @@ public class EnrolmentController {
                 }
             old.setStudentId(newData.getStudentId());
             old.setBatchId(newData.getBatchId());
+            old.setJoiningDate(newData.getJoiningDate());
 
             return ResponseEntity.ok(enrolrepo.save(old));
 
