@@ -6,4 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AttendanceRepository extends JpaRepository<Attendance,Integer>{
     boolean existsByEnrolmentIdAndDate(int enrolmentId, LocalDate date);
+    boolean existsByEnrolmentIdAndDateAndIdNot(int enrolmentId, LocalDate date, int id);
 }

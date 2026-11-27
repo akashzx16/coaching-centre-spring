@@ -5,9 +5,11 @@ import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -50,5 +52,34 @@ public class AttendanceController {
             }
             return  ResponseEntity.notFound().build();  
     }
-    
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteAttendance(@PathVariable int id){
+            if(!attendanceRepository.existsById(id)){
+                return ResponseEntity.notFound().build();
+            }
+            attendanceRepository.deleteById(id);
+            return ResponseEntity.noContent().build();
+    }
+     @PutMapping ("/{id}")
+    public ResponseEntity<Attendance> updateAttendance (@PathVariable int id, @Valid @RequestBody Attendance newData){
+        Optional<Attendance> result= attendanceRepository.findById(id);
+        if(result.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        Attendance existing = result.get();
+        int enrolmentId= newData.getEnrolmentId();
+       if(!enrolmentRepository.existsById(enrolmentId)){
+            return ResponseEntity.notFound().build();
+        }
+
+        if(attendanceRepository.existsByEnrolmentIdAndDateAndIdNot(enrolmentId, newData.getDate(), id)){
+            return  ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+        existing.setEnrolmentId(enrolmentId);
+        existing.setDate(newData.getDate());
+        existing.setPresent(newData.getPresent());
+        return ResponseEntity.ok(attendanceRepository.save(existing));
+    }
 }
+   
+
