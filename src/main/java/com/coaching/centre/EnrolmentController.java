@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import jakarta.validation.constraints.AssertTrue;
 
 import jakarta.validation.Valid;
 
@@ -88,7 +89,7 @@ public class EnrolmentController {
             old.setStudentId(newData.getStudentId());
             old.setBatchId(newData.getBatchId());
             old.setJoiningDate(newData.getJoiningDate());
-
+            old.setLeavingDate(newData.getLeavingDate());
             return ResponseEntity.ok(enrolrepo.save(old));
 
 
