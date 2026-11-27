@@ -42,7 +42,9 @@ public class EnrolmentController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); 
         }
 
-
+        if(enrolment.getLeavingDate()==null && enrolrepo.existsByStudentIdAndBatchIdAndLeavingDateIsNull(enrolment.getStudentId(), enrolment.getBatchId())){
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
 
         Enrolment savedEnrolment = enrolrepo.save(enrolment);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedEnrolment);  
@@ -85,6 +87,9 @@ public class EnrolmentController {
                 }
                 if(!batchRepository.existsById(newData.getBatchId())){
                     return ResponseEntity.notFound().build();
+                }
+                if(newData.getLeavingDate()==null && enrolrepo.existsByStudentIdAndBatchIdAndLeavingDateIsNullAndIdNot(newData.getStudentId(), newData.getBatchId(), id)){
+                    return ResponseEntity.status(HttpStatus.CONFLICT).build();
                 }
             old.setStudentId(newData.getStudentId());
             old.setBatchId(newData.getBatchId());
